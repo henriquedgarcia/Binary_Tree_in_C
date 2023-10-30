@@ -26,9 +26,9 @@ BinNode* setLeft(BinNode *node, void *value);
 BinNode* setRight(BinNode *node, void *value);
 BinNode* bstInsert(BinNode* node, void *value);
 
-void bind(BinNode *parent, BinNode *child);
-void remove(BinNode *node);
-void prune(BinNode *node);
+void setParent(BinNode *parent, BinNode *child);
+// void remove(BinNode *node);
+// void prune(BinNode *node);
 
 BinNode* search(BinNode* node, void *value);
 
