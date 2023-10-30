@@ -1,5 +1,6 @@
 #include "bintree.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct BinNode {
 	void *value;
@@ -33,13 +34,17 @@ BinNode* brother(BinNode *node){
 }
 
 BinNode* min(BinNode *node){
-    if(isLeaf(node)) return node;
-    min(left(node));
+    if(!isLeaf(node)) {
+        min(left(node));
+    }
+    return node;
 }
 
 BinNode* max(BinNode *node){
-    if(isLeaf(node)) return node;
-    min(right(node));
+    if(isLeaf(node)) {
+        min(right(node));
+    }
+    return node;
 }
 
 BinNode* successor(BinNode *node){
@@ -118,13 +123,13 @@ BinNode* bstInsert(BinNode* node, void *value) {
         if (left(node) == NULL)
             setLeft(node, value);
         else
-            insertBST(left(node), value);
+            bstInsert(left(node), value);
     }
-    else {
+    else if (value > info(node)) {
         if (right(node) == NULL)
             setRight(node, value);
         else
-            insertBST(right(node), value);
+            bstInsert(right(node), value);
     }
     return node;
 }
@@ -133,17 +138,17 @@ void setParent(BinNode *parent, BinNode *child){
     child->parent = parent;
 }
 
-void remove(BinNode *node);
-void prune(BinNode *node);
+// void remove(BinNode *node);
+// void prune(BinNode *node);
 
 BinNode* search(BinNode* node, void *value) {
     if (node == NULL || info(node) == value)
         return node;
     
     if (value < info(node))
-        return searchBST(left(node), value);
+        return bstInsert(left(node), value);
     else
-        return searchBST(right(node), value);
+        return bstInsert(right(node), value);
 }
 
 void printTree(BinNode* node) {
@@ -154,26 +159,30 @@ void printTree(BinNode* node) {
     level++;
     printTree(right(node));
     for (int i = 0; i < level-1; i++) printf("    ");
-    printf("+----%d\n", (int*)info(node));
+    printf("+----%d\n", *(int*)info(node));
     printTree(left(node));
     level--;
 }
 
 void showNode(BinNode *node) {
-    printf("Value: %d\n", (int*)info(node));
-	if (parent(node) != NULL) 
-        printf("Parent: %d\n", (int*)info(parent(node)));
-    else 
+    printf("Value: %d\n", *(int*)info(node));
+	if (parent(node) != NULL) {
+        printf("Parent: %d\n", *(int*)info(parent(node)));
+    }else {
         printf("Parent: NULL\n");
-    
-	if(left(node)!=NULL) 
-		printf("Left: %d\n", (int*)info(left(node)));
-	else
+    }
+
+	if(left(node)!=NULL) {
+		printf("Left: %d\n", *(int*)info(left(node)));
+	}else{
 		printf("Left: NULL\n");
+	}
 	
-	if(right(node)!=NULL) 
-		printf("Right: %d\n", (int*)info(right(node)));
-	else
+    if(right(node)!=NULL) {
+		printf("Right: %d\n", *(int*)info(right(node)));
+	}else{
 		printf("Right: NULL\n");
+    }
+    
     printf("\n\n");
 }
